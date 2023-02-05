@@ -15,6 +15,14 @@ ENTRYPOINT [ "vimeo-dl" ]
 
 ############################################################
 
+FROM lscr.io/linuxserver/ffmpeg:5.1.2 AS vimeo-dl-custom
+COPY --from=build /vimeo-dl /usr/bin/vimeo-dl
+COPY vimeo-dl-custom.sh /usr/bin/vimeo-dl-custom.sh
+WORKDIR /downloads
+ENTRYPOINT [ "/usr/bin/vimeo-dl-custom.sh" ]
+
+############################################################
+
 FROM lscr.io/linuxserver/ffmpeg:5.1.2 AS with-ffmpeg
 COPY --from=build /vimeo-dl /usr/bin/vimeo-dl
 WORKDIR /downloads
